@@ -1,0 +1,12 @@
+PlaywrightTests/obj/Debug/net8.0/*
+PlaywrightTests/.vs/*
+PlaywrightTests/obj/*
+PlaywrightTests/bin/*
+
+PlaywrightTests/obj/Debug/net8.0/PlaywrightTests.csproj.AssemblyReference.cache
+PlaywrightTests/obj/Debug/net8.0/PlaywrightTests.AssemblyInfoInputs.cache
+PlaywrightTests/obj/Debug/net8.0/PlaywrightTests.csproj.AssemblyReference.cache
+PlaywrightTests/obj/Debug/net8.0/PlaywrightTests.AssemblyInfo.cs
+PlaywrightTests/bin/Debug/net8.0/nunit_random_seed.tmp
+.vs/Playwright/xs/UserPrefs.xml
+.vs/Playwright/xs/project-cache/PlaywrightTests-Debug.json
