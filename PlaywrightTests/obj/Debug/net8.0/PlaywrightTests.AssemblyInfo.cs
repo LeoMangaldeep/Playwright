@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PlaywrightTests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+fe0655d53f22da51b0e8c857767f8d006746f31e")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ae98cad0d77813f0b6dc4f1a7828a5390cc9a12b")]
 [assembly: System.Reflection.AssemblyProductAttribute("PlaywrightTests")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PlaywrightTests")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
