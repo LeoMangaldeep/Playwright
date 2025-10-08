@@ -18,7 +18,8 @@ namespace PlaywrightTests
             PlaywrightDriver driver = new PlaywrightDriver();
             var page = await driver.InitializePlaywright();
             //await page.GetByRole(AriaRole.Link, new() { Name = "Visit QBE Australia" }).ClickAsync();
-            await page.GetByRole(AriaRole.Button, new() { Name = "Close" }).ClickAsync();
+            //await page.GetByRole(AriaRole.Button, new() { Name = "Close" }).ClickAsync();
+            await page.ClickAsync("text=Visit QBE Australia");
 
         }
 
