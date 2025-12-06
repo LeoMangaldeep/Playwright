@@ -12,7 +12,7 @@ namespace PlaywrightTests
         private PlaywrightDriverInitializer _playwrightDriverInitializer;
 
         [SetUp]
-        public async Task Setup()
+        public void Setup()
         {
             TestSettings testSettings = new TestSettings
             {
@@ -23,20 +23,23 @@ namespace PlaywrightTests
             };
             _playwrightDriverInitializer = new PlaywrightDriverInitializer();
             _driver = new PlaywrightDriver(testSettings, _playwrightDriverInitializer);
-            await _driver.Page.GotoAsync("https://www.qbe.com/");
         }
 
         [Test]
         public async Task TestLinkToAustraliaWebsite()
         {
-            await _driver.Page.GetByRole(AriaRole.Link, new() { Name = "Visit QBE Australia" }).ClickAsync();
+            var page = await _driver.Page;
+            await page.GotoAsync("https://www.qbe.com/");
+            await page.GetByRole(AriaRole.Link, new() { Name = "Visit QBE Australia" }).ClickAsync();
         }
 
         [Test]
         public async Task TestLinkToNewZealandWebsite()
         {
-            await _driver.Page.GetByRole(AriaRole.Button, new() { Name = "Close" }).ClickAsync();
-            await _driver.Page.GetByText("About").Nth(1).ClickAsync();
+            var page = await _driver.Page;
+            await page.GotoAsync("https://www.qbe.com/");
+            await page.GetByRole(AriaRole.Button, new() { Name = "Close" }).ClickAsync();
+            await page.GetByText("About").Nth(1).ClickAsync();
         }
         
         [TearDown] 
@@ -44,9 +47,9 @@ namespace PlaywrightTests
         {
             // Cleanup code needed for playwright browser, browserContext
             // and dispose the resources, 
-
-            await _driver.Browser.CloseAsync();
-            await _driver.Browser.DisposeAsync();
+            var browser = await _driver.Browser;
+            await browser.CloseAsync();
+            await browser.DisposeAsync();
         }
     }
 }

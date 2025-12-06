@@ -6,10 +6,10 @@ namespace PlaywrightTests.Driver
 {
     public class PlaywrightDriver
     {
-        private readonly Task<IBrowser> _browser;
-        private readonly Task<IBrowserContext> _browserContext;
+        private readonly AsyncTask<IBrowser> _browser;
+        private readonly AsyncTask<IBrowserContext> _browserContext;
         private readonly TestSettings _testSettings;
-        private readonly Task<IPage> _page;
+        private readonly AsyncTask<IPage> _page;
         private readonly IPlaywrightDriverInitializer _playwrightDriverInitializer;
 
 
@@ -17,13 +17,13 @@ namespace PlaywrightTests.Driver
         {
             _testSettings = testSettings;
             _playwrightDriverInitializer = playwrightDriverInitializer;
-            _browser = Task.Run(InitializePlaywrightAsync);
-            _browserContext = Task.Run(CreateBrowserContext);
-            _page = Task.Run(CreatePageAsync);
+            _browser = new AsyncTask<IBrowser>(InitializePlaywrightAsync);
+            _browserContext = new AsyncTask<IBrowserContext>(CreateBrowserContext);
+            _page = new AsyncTask<IPage>(CreatePageAsync);
         }
-        public IPage Page => _page.Result;
-        public IBrowser Browser => _browser.Result;
-        public IBrowserContext BrowserContext => _browserContext.Result;
+        public Task<IPage> Page => _page.Value;
+        public Task<IBrowser> Browser => _browser.Value;
+        public Task<IBrowserContext> BrowserContext => _browserContext.Value;
 
         private async Task<IBrowser> InitializePlaywrightAsync()
         {
@@ -45,5 +45,5 @@ namespace PlaywrightTests.Driver
         {
             return await (await _browserContext).NewPageAsync();
         }
-    }
+    } 
 }
