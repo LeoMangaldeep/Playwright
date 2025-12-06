@@ -1,7 +1,5 @@
-using System;
-using System.Threading.Tasks;
-using System.Text.RegularExpressions;
 using Microsoft.Playwright;
+using NUnit.Framework.Internal;
 using PlaywrightTests.Config;
 using PlaywrightTests.Driver;
 
@@ -10,44 +8,46 @@ namespace PlaywrightTests
 
     public class Tests
     {
-        private IPage _page;
+        private PlaywrightDriver _driver;
+        private PlaywrightDriverInitializer _playwrightDriverInitializer;
 
         [SetUp]
         public async Task Setup()
         {
-            TestSettings testSettings = new()
+            TestSettings testSettings = new TestSettings
             {
                 Headless = false,
-                Channel = "webkit",
+                //Channel = "msedge",
                 Devtools = true,
                 SlowMo = 1500,
-                Args = new string[] { "start-maximized" },
-                DriverType = DriverType.Webkit
+                DriverType = DriverType.Edge
             };
-
-            var driver = new PlaywrightDriver();
-            _page = await driver.InitializePlaywright(testSettings);
+            _playwrightDriverInitializer = new PlaywrightDriverInitializer();
+            _driver = new PlaywrightDriver(testSettings, _playwrightDriverInitializer);
+            await _driver.Page.GotoAsync("https://www.qbe.com/");
         }
 
         [Test]
         public async Task TestLinkToAustraliaWebsite()
         {
-            await _page.GetByRole(AriaRole.Link, new() { Name = "Visit QBE Australia" }).ClickAsync();
+            await _driver.Page.GetByRole(AriaRole.Link, new() { Name = "Visit QBE Australia" }).ClickAsync();
         }
 
         [Test]
         public async Task TestLinkToNewZealandWebsite()
         {
-            await _page.GetByRole(AriaRole.Button, new() { Name = "Close" }).ClickAsync();
-            await _page.GetByText("About").Nth(1).ClickAsync();
+            await _driver.Page.GetByRole(AriaRole.Button, new() { Name = "Close" }).ClickAsync();
+            await _driver.Page.GetByText("About").Nth(1).ClickAsync();
         }
         
         [TearDown] 
-        public void TearDown()
+        public async Task TearDown()
         {
             // Cleanup code needed for playwright browser, browserContext
             // and dispose the resources, 
-        }
 
+            await _driver.Browser.CloseAsync();
+            await _driver.Browser.DisposeAsync();
+        }
     }
 }
