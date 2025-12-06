@@ -17,8 +17,7 @@ namespace PlaywrightTests
             TestSettings testSettings = new TestSettings
             {
                 Headless = false,
-                //Channel = "msedge",
-                Devtools = true,
+                DevTools = true,
                 SlowMo = 1500,
                 DriverType = DriverType.Edge
             };
