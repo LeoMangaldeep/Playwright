@@ -1,5 +1,8 @@
+using System;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 using Microsoft.Playwright;
+using PlaywrightTests.Config;
 using PlaywrightTests.Driver;
 
 namespace PlaywrightTests
@@ -7,37 +10,44 @@ namespace PlaywrightTests
 
     public class Tests
     {
+        private IPage _page;
+
         [SetUp]
-        public void Setup()
+        public async Task Setup()
         {
+            TestSettings testSettings = new()
+            {
+                Headless = false,
+                Channel = "webkit",
+                Devtools = true,
+                SlowMo = 1500,
+                Args = new string[] { "start-maximized" },
+                DriverType = DriverType.Webkit
+            };
+
+            var driver = new PlaywrightDriver();
+            _page = await driver.InitializePlaywright(testSettings);
         }
 
         [Test]
-        public async Task Test1()
+        public async Task TestLinkToAustraliaWebsite()
         {
-            PlaywrightDriver driver = new PlaywrightDriver();
-            var page = await driver.InitializePlaywright();
-            //await page.GetByRole(AriaRole.Link, new() { Name = "Visit QBE Australia" }).ClickAsync();
-            //await page.GetByRole(AriaRole.Button, new() { Name = "Close" }).ClickAsync();
-            await page.ClickAsync("text=Visit QBE Australia");
-
+            await _page.GetByRole(AriaRole.Link, new() { Name = "Visit QBE Australia" }).ClickAsync();
         }
 
         [Test]
-        public async Task LaunchingBrowserInAnotherOption()
+        public async Task TestLinkToNewZealandWebsite()
         {
-            var playwrightDriver = await Playwright.CreateAsync();
-
-            var browserOptions = new BrowserTypeLaunchOptions();
-            browserOptions.Headless = false;
-            browserOptions.Channel = "chrome";
-
-            var chromium = await playwrightDriver["chromium"].LaunchAsync(browserOptions);
-            var browserContext = await chromium.NewContextAsync();
-            var page = await browserContext.NewPageAsync();
-
-            await page.GotoAsync("https://www.qbe.com");
-
+            await _page.GetByRole(AriaRole.Button, new() { Name = "Close" }).ClickAsync();
+            await _page.GetByText("About").Nth(1).ClickAsync();
         }
+        
+        [TearDown] 
+        public void TearDown()
+        {
+            // Cleanup code needed for playwright browser, browserContext
+            // and dispose the resources, 
+        }
+
     }
 }
