@@ -3,7 +3,7 @@ using NUnit.Framework.Internal;
 using PlaywrightTests.Config;
 using PlaywrightTests.Driver;
 
-namespace PlaywrightTests.UnitTest
+namespace PlaywrightTests
 {
 
     public class Tests

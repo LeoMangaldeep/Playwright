@@ -4,7 +4,7 @@ using PlaywrightTests.Config;
 
 namespace PlaywrightTests.Driver
 {
-    public class PlaywrightDriverInitializer
+    public class PlaywrightDriverInitializer : IPlaywrightDriverInitializer
     {
         public const float DEFAULT_TIMEOUT = 30f;
         public async Task<IBrowser> GetChromeDriverAsync(TestSettings testSettings)
@@ -24,8 +24,8 @@ namespace PlaywrightTests.Driver
         public async Task<IBrowser> GetWebKitDriverAsync(TestSettings testSettings)
         {
             var options = GetParameters(testSettings.Args, testSettings.Timeout, testSettings.Headless, testSettings.SlowMo);
-            options.Channel = "webKit";
-            return await GetBrowserAsync(DriverType.WebKit, options);
+            options.Channel = "webkit";
+            return await GetBrowserAsync(DriverType.Webkit, options);
         }
         public async Task<IBrowser> GetChromiumDriverAsync(TestSettings testSettings)
         {
@@ -36,14 +36,14 @@ namespace PlaywrightTests.Driver
         public async Task<IBrowser> GetEdgeDriverAsync(TestSettings testSettings)
         {
             var options = GetParameters(testSettings.Args, testSettings.Timeout, testSettings.Headless, testSettings.SlowMo);
-            options.Channel = "edge";
-            return await GetBrowserAsync(DriverType.Edge, options);
+            options.Channel = "msedge";
+            return await GetBrowserAsync(DriverType.Chromium, options);
         }
         private async Task<IBrowser> GetBrowserAsync(DriverType driverType, BrowserTypeLaunchOptions options)
         {
             var playwright = await Playwright.CreateAsync();
             return await playwright[driverType.ToString().ToLower()].LaunchAsync(options);
-        } 
+        }
 
         private BrowserTypeLaunchOptions GetParameters(string[]? args, float? timeout = DEFAULT_TIMEOUT, bool? headless = true, float? slowmo = null)
         {
@@ -51,14 +51,14 @@ namespace PlaywrightTests.Driver
             {
                 Args = args,
                 Headless = headless,
-                Timeout = timeout,
+                Timeout = ToMilliseconds(timeout),
                 SlowMo = slowmo
             };
         }
-        
+
         private static float? ToMilliseconds(float? seconds)
         {
-                return seconds * 1000;
+            return seconds * 1000;
         }
     }
 }
